@@ -414,8 +414,9 @@ export default function LabChallengesPage() {
             </h2>
             <p className="text-white/70 leading-relaxed mb-6">
               This section showcases my cybersecurity learning journey. As I
-              complete more challenges and CTFs, I&apos;ll document my approaches,
-              tools used, and key takeaways. Stay tuned for more writeups!
+              complete more challenges and CTFs, I&apos;ll document my
+              approaches, tools used, and key takeaways. Stay tuned for more
+              writeups!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
