@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
 import ProjectCard from "@/components/ProjectCard";
 import { Filter } from "lucide-react";
@@ -91,16 +91,13 @@ const projects: Project[] = [
 export default function ProjectsPage() {
   const headerRef = useRef<HTMLDivElement>(null);
   const [filter, setFilter] = useState<string>("all");
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>(projects);
 
-  /**
-   * Filter projects by category
-   */
-  useEffect(() => {
+  // Use useMemo to compute filtered projects without useEffect
+  const filteredProjects = useMemo(() => {
     if (filter === "all") {
-      setFilteredProjects(projects);
+      return projects;
     } else {
-      setFilteredProjects(projects.filter((p) => p.category === filter));
+      return projects.filter((p) => p.category === filter);
     }
   }, [filter]);
 
@@ -122,13 +119,17 @@ export default function ProjectsPage() {
    * Animate project cards when filter changes
    */
   useEffect(() => {
-    gsap.from(".project-card", {
-      y: 30,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.1,
-      ease: "power2.out",
-    });
+    const timer = setTimeout(() => {
+      gsap.from(".project-card", {
+        y: 30,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power2.out",
+      });
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [filteredProjects]);
 
   const categories = [

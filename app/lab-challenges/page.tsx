@@ -358,6 +358,8 @@ export default function LabChallengesPage() {
                                 <Image
                                   src={screenshot}
                                   alt={`Screenshot ${index + 1}`}
+                                  width={800}
+                                  height={500}
                                   className="w-full h-full object-cover"
                                 />
                               </div>

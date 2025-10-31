@@ -42,7 +42,8 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         <Image
           src={project.image}
           alt={project.title}
-          fill
+          width={800}
+          height={600}
           className={`object-cover transition-all duration-700 ${
             isImageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-110"
           } group-hover:scale-105`}
