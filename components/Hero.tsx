@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, Shield, Code, Lock } from "lucide-react";
 import { gsap } from "gsap";
-import Lottie from "lottie-react";
 import Image from "next/image";
 
 /**
@@ -171,9 +170,12 @@ export default function Hero() {
               >
                 {/* Profile image from Unsplash - cybersecurity themed */}
                 <Image
-                  src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=800&fit=crop&crop=faces"
+                  src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=800&fit=crop&crop=face"
                   alt="Opiyo Don - Cybersecurity Professional"
+                  width={800}
+                  height={800}
                   className="w-full h-full object-cover"
+                  priority
                 />
                 {/* Overlay gradient */}
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />

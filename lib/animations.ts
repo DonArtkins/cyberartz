@@ -5,6 +5,9 @@
 
 import { gsap } from "gsap";
 
+// Define a type that works with GSAP
+type AnimationTarget = string | Element | null | Array<string | Element>;
+
 /**
  * Fade in animation from opacity 0 to 1
  * @param element - Target element or selector
@@ -12,7 +15,7 @@ import { gsap } from "gsap";
  * @param delay - Delay before animation starts
  */
 export const fadeIn = (
-  element: gsap.TweenTarget,
+  element: AnimationTarget,
   duration: number = 0.8,
   delay: number = 0
 ): gsap.core.Tween => {
@@ -32,7 +35,7 @@ export const fadeIn = (
  * @param delay - Delay before animation starts
  */
 export const slideUp = (
-  element: gsap.TweenTarget,
+  element: AnimationTarget,
   distance: number = 50,
   duration: number = 0.8,
   delay: number = 0
@@ -54,7 +57,7 @@ export const slideUp = (
  * @param delay - Delay before animation starts
  */
 export const slideInLeft = (
-  element: gsap.TweenTarget,
+  element: AnimationTarget,
   distance: number = 100,
   duration: number = 0.8,
   delay: number = 0
@@ -76,7 +79,7 @@ export const slideInLeft = (
  * @param delay - Delay before animation starts
  */
 export const slideInRight = (
-  element: gsap.TweenTarget,
+  element: AnimationTarget,
   distance: number = 100,
   duration: number = 0.8,
   delay: number = 0
@@ -97,7 +100,7 @@ export const slideInRight = (
  * @param staggerDelay - Delay between each element animation
  */
 export const staggerAnimation = (
-  elements: gsap.TweenTarget,
+  elements: AnimationTarget,
   animation: "fadeIn" | "slideUp" | "slideInLeft" | "slideInRight" = "fadeIn",
   staggerDelay: number = 0.1
 ): gsap.core.Timeline => {
@@ -151,7 +154,7 @@ export const staggerAnimation = (
  * @param delay - Delay before animation starts
  */
 export const scaleUp = (
-  element: gsap.TweenTarget,
+  element: AnimationTarget,
   duration: number = 0.6,
   delay: number = 0
 ): gsap.core.Tween => {
@@ -192,19 +195,21 @@ export const hoverScale = (element: HTMLElement): void => {
  * @param speed - Parallax speed multiplier
  */
 export const parallaxScroll = (
-  element: gsap.TweenTarget,
+  element: AnimationTarget,
   speed: number = 0.5
 ): void => {
-  gsap.to(element, {
-    y: () => window.scrollY * speed,
-    ease: "none",
-    scrollTrigger: {
-      trigger: "body",
-      start: "top top",
-      end: "bottom bottom",
-      scrub: true,
-    },
-  });
+  if (typeof window !== "undefined") {
+    gsap.to(element, {
+      y: () => window.scrollY * speed,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+      },
+    });
+  }
 };
 
 /**
@@ -213,7 +218,7 @@ export const parallaxScroll = (
  * @param direction - Direction of reveal
  */
 export const revealOnScroll = (
-  element: gsap.TweenTarget,
+  element: AnimationTarget,
   direction: "up" | "down" | "left" | "right" = "up"
 ): gsap.core.Tween => {
   const animProps: gsap.TweenVars = {
@@ -249,12 +254,12 @@ export const revealOnScroll = (
  * Text reveal animation letter by letter
  * @param element - Target element containing text
  * @param duration - Duration per letter
- * @param stagger - Delay between letters
+ * @param staggerDelay - Delay between letters
  */
 export const textReveal = (
-  element: gsap.TweenTarget,
+  element: AnimationTarget,
   duration: number = 0.05,
-  stagger: number = 0.03
+  staggerDelay: number = 0.03
 ): gsap.core.Timeline => {
   const tl = gsap.timeline();
 
@@ -303,8 +308,13 @@ export const pageTransition = {
 /**
  * Initialize ScrollTrigger (call this in useEffect)
  */
-export const initScrollTrigger = async () => {
-  const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-  gsap.registerPlugin(ScrollTrigger);
-  return ScrollTrigger;
+export const initScrollTrigger = async (): Promise<
+  typeof ScrollTrigger | null
+> => {
+  if (typeof window !== "undefined") {
+    const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+    gsap.registerPlugin(ScrollTrigger);
+    return ScrollTrigger;
+  }
+  return null;
 };
